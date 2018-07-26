@@ -394,13 +394,12 @@ pub fn PeekStream(comptime buffer_size: usize, comptime InStreamError: type) typ
             self.at_end = (read < left);
             return pos + read;
         }
-
     };
 }
 
 pub const SliceStream = struct {
     const Self = this;
-    pub const Error = error { };
+    pub const Error = error{};
     pub const Stream = InStream(Error);
 
     pub stream: Stream,
@@ -426,7 +425,6 @@ pub const SliceStream = struct {
 
         return size;
     }
-
 };
 
 pub fn BufferedOutStream(comptime Error: type) type {
@@ -519,7 +517,7 @@ pub const BufferedAtomicFile = struct {
         });
         errdefer allocator.destroy(self);
 
-        self.atomic_file = try os.AtomicFile.init(allocator, dest_path, os.default_file_mode);
+        self.atomic_file = try os.AtomicFile.init(allocator, dest_path, os.File.default_mode);
         errdefer self.atomic_file.deinit();
 
         self.file_stream = FileOutStream.init(&self.atomic_file.file);
